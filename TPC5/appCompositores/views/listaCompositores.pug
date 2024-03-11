@@ -1,0 +1,42 @@
+extends layout
+
+block content
+    .w3-card-4 
+        header.w3-container.w3-teal 
+            h1 Lista de Compositores 
+            a.w3-btn.w3-round.w3-grey(href="/compositores/registo") +
+        
+        .w3-container 
+            table.w3-table-all 
+                tr 
+                    th ID 
+                    th Nome 
+                    th Bio 
+                    th Data Nascimento 
+                    th Data Obito 
+                    th Periodo
+                    th Actions
+
+                each compositor in lCompositores 
+                    tr
+                        td= compositor.id 
+                        td 
+                            a(href="/compositores/" + compositor.id)= compositor.nome 
+                        td= compositor.bio 
+                        td= compositor.dataNasc 
+                        td= compositor.dataObito
+                        td
+                            a(href="/compositores?periodo=" + compositor.periodo)= compositor.periodo
+                        td
+                            span [
+                            a(href="compositores/edit/" + compositor.id) Edit
+                            span ]
+                            span [
+                            a(href="compositores/delete/" + compositor.id) Delete
+                            span ] 
+        
+        footer.w3-container.w3-teal 
+            h5
+                span Generated in #{date} - [
+                a(href="/compositores") Return
+                span ]

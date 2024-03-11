@@ -1,0 +1,32 @@
+extends layout
+
+block content
+
+    .w3-card-4 
+        header.w3-container.w3-purple 
+            h2 Compositor Form 
+        
+        form.w3-container(method="POST")
+            fieldset 
+                legend Metadata
+                label ID 
+                input.w3-input.w3-round(type="text" name="id" value=Compositor.id readonly)
+                label Name
+                input.w3-input.w3-round(type="text" name="nome" value=Compositor.nome) 
+                label Bio 
+                input.w3-input.w3-round(type="text" name="bio" value=Compositor.bio)
+                label Data Nascimento 
+                input.w3-input.w3-round(type="text" name="dataNasc" value=Compositor.dataNasc)
+                label Data Obito 
+                input.w3-input.w3-round(type="text" name="dataObito" value=Compositor.dataObito)
+                label Periodo
+                input.w3-input.w3-round(type="text" name="periodo" value=Compositor.periodo)
+            
+            br
+            button.w3-btn.w3-purple.w3-mb-2(type="submit") Register
+
+        footer.w3-container.w3-purple
+            h5 
+                span Generated in #{date} - [
+                a(href="/compositores") Return
+                span ]
