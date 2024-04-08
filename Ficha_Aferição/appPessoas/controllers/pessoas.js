@@ -11,7 +11,7 @@ module.exports.list = () => {
 module.exports.findById = id => {
     console.log(id)
     return Pessoa
-        .findOne({BI : id})
+        .findOne({_id : id})
         .exec()
 }
 
