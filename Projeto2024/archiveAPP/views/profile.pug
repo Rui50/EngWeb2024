@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  .centered-nav.w3-bar.w3-theme-d5
+    .navbar-left
+
+    .navbar-middle
+        a.w3-bar-item.w3-button(href="/resources") Recursos
+        a.w3-bar-item.w3-button(href="/profile") Profile
+        a.w3-bar-item.w3-button(href="/news") News
+        a.w3-bar-item.w3-button(href="/resources/rankings") Rankings
+        if user.level === 'admin'
+            a.w3-bar-item.w3-button(href="/adminpanel") Admin Panel
+        
+    .navbar-right
+        a.w3-bar-item.w3-button(href="/logout") Logout
+
+  .w3-container.w3-padding-64.w3-theme-l5.text-center
+    h1.welcome-message Archive Profile
+
+    .w3-card-4.custom-card
+      .w3-container.w3-theme
+        h2 
+          b User Information
+      .w3-container
+        p 
+          strong Username: 
+          | #{user.username}
+        p 
+          strong Name: 
+          | #{user.name}
+        p 
+          strong Email: 
+          | #{user.email}
+        p 
+          strong Last Access: 
+          | #{new Date(user.lastAccess).toLocaleString()}
+        p 
+          strong Role: 
+          | #{user.level}
+
+        img.profile-picture(src=profilePicture, alt='Profile Picture', style='max-width: 200px; max-height: 200px; border-radius: 50%;')
+      
+      a.w3-button.w3-block.w3-theme-d1.w3-margin-top(href="/profile/edit") Edit Profile
+
+    if user.level === "admin" || user.level === "producer"
+
+      hr
+
+      a.w3-button.w3-block.w3-theme-d1.w3-margin-top(href="/resources/add") Add Resource
+
+      hr
+
+      h2 Your Resources in the Archive
+      if resources.length > 0
+        each resource in resources
+          .w3-card-4.w3-margin.w3-white
+            .w3-container.w3-theme
+              h3 #{resource.title}
+            .w3-container
+              p 
+                b Type: 
+                | #{resource.type}
+              p 
+                b Creation Date: 
+                | #{new Date(resource.creationDate).toLocaleDateString()}
+            .w3-container.w3-padding
+              a.w3-button.w3-theme-d1(href=`/resources/${resource._id}`) View
+              a.w3-button.w3-theme-d1(href=`/resources/edit-resource/${resource._id}`) Edit
+              a.w3-button.w3-theme-d1(href=`/resources/delete/${resource._id}`) Delete
+      else
+        p No resources found.

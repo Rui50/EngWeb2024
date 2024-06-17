@@ -1,0 +1,71 @@
+extends layout
+
+block content
+    .centered-nav.w3-bar.w3-theme-d5
+        .navbar-left
+
+        .navbar-middle
+            a.w3-bar-item.w3-button(href="/resources") Recursos
+            a.w3-bar-item.w3-button(href="/profile") Profile
+            a.w3-bar-item.w3-button(href="/news") News
+            a.w3-bar-item.w3-button(href="/resources/rankings") Rankings
+            if currentUser.level === 'admin'
+                a.w3-bar-item.w3-button(href="/adminpanel") Admin Panel
+            
+        .navbar-right
+            a.w3-bar-item.w3-button(href="/logout") Logout
+
+
+    .admin-container
+        .admin-header
+            h1 Admin Panel
+
+            .options-container
+                a.action-button(href="/resources/add") Add Resource
+                a.action-button(href="/news/add") Add News
+
+            .options-container
+                form(action="/admin/export" method="POST")
+                    button.action-button(type="submit") Export Data
+
+                form(action="/admin/import" method="POST" enctype="multipart/form-data")
+                    input(type="file" name="file" required)
+                    button.action-button(type="submit") Import Data
+
+        .admin-columns
+            .admin-column
+                h2 Users
+                .scrollable-content
+                    each user in userList
+                        .card
+                            .card-content
+                                p Username: #{user.username}
+                                p Email: #{user.email}
+                if userList.length > 0
+                    a.button.centered-button(href="/users") See All Users
+
+            .admin-column
+                h2 Resources
+                .scrollable-content
+                    each resource in resourceList
+                        .card
+                            .card-content
+                                p Title: #{resource.title}
+                                p Type: #{resource.type}
+                if resourceList.length > 0
+                    a.button.centered-button(href="/resources") See All Resources
+
+            .admin-column
+                h2 Comments
+                .scrollable-content
+                    if allComments && allComments.length > 0
+                        each comment in allComments
+                            .card
+                                .card-content
+                                    p.comment-text(style="text-decoration: none;") #{comment.content}
+                                    p.comment-meta By: #{comment.user} on #{new Date(comment.postDate).toLocaleString()}
+                if resourceList.length > 0
+                    a.button.centered-button(href="/resources/comments") See All Comments
+                else
+                    p No comments available
+                        

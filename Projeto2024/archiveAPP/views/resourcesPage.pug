@@ -1,0 +1,66 @@
+extends layout
+
+block content
+    
+    .centered-nav.w3-bar.w3-theme-d5
+        .navbar-left
+
+        .navbar-middle
+            a.w3-bar-item.w3-button(href="/resources") Recursos
+            a.w3-bar-item.w3-button(href="/profile") Profile
+            a.w3-bar-item.w3-button(href="/news") News
+            a.w3-bar-item.w3-button(href="/resources/rankings") Rankings
+            if currentUser.level === 'admin'
+                a.w3-bar-item.w3-button(href="/adminpanel") Admin Panel
+            
+        .navbar-right
+            a.w3-bar-item.w3-button(href="/logout") Logout
+
+    
+    .w3-container
+        form.w3-row.w3-margin-bottom(action="/resources/search" method="POST")
+            h3.w3-col.s12 Search
+            .w3-col.s4
+                select.filter-select(name="filter")
+                    option(value="title") Title
+                    option(value="type") Type
+                    option(value="author") Author
+                    option(value="tag") Tag
+                    option(value="year") Year
+            .w3-col.s6
+                input.search-input(type="text" name="search" placeholder="Search...")
+            .w3-col.s2
+                button.w3-button.w3-black(type="submit") Submit
+
+        each r in resourceList
+            a(href=`/resources/${r['_id']}`)
+                .resource-card
+                    .resource-title #{r.title}
+                    .resource-info 
+                        p 
+                            b Subtitle: 
+                            | #{r.subtitle || 'Indefinido'}
+                        p 
+                            b Tipo: 
+                            | #{r.type}
+                        p 
+                            b Autor: 
+                            | #{r.author}
+                        p 
+                            b Submitter: 
+                            | #{r.submitter}
+                        p 
+                            b Date: 
+                            | #{new Date(r.creationDate).toLocaleDateString()}
+                        p 
+                            b Tags: 
+                            | #{r.tags.join(', ')}
+                        p 
+                            b Rating: 
+                            | #{r.averageRating} ⭐
+                    .resource-actions
+                        .button-container
+                            a(href=`/resources/${r._id}`)
+                                img.w3-margin(src="/images/file.png" alt="details icon")
+                            a(href=`/resources/download/${r._id}`) 
+                                img.w3-margin(src="/images/download.png" alt="download icon")

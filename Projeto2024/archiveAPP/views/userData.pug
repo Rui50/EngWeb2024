@@ -1,0 +1,90 @@
+extends layout
+
+block content
+
+    .centered-nav.w3-bar.w3-theme-d5
+        .navbar-left
+
+        .navbar-middle
+            a.w3-bar-item.w3-button(href="/resources") Recursos
+            a.w3-bar-item.w3-button(href="/profile") Profile
+            a.w3-bar-item.w3-button(href="/news") News
+            a.w3-bar-item.w3-button(href="/resources/rankings") Rankings
+            a.w3-bar-item.w3-button(href="/adminpanel") Admin Panel
+
+        .navbar-right
+            a.w3-bar-item.w3-button(href="/logout") Logout
+
+    .container-user
+        .user-info-section-user
+            h2.centered-title-user User Information
+            .card-user
+                .card-body-user
+                    p 
+                        b Username: 
+                        | #{userData.username}
+                    p 
+                        b Email: 
+                        | #{userData.email}
+                    p 
+                        b Level: 
+                        | #{userData.level}
+                    p 
+                        b Registration Date: 
+                        | #{userData.registrationDate}
+                    p 
+                        b Last Access: 
+                        | #{userData.lastAccess}
+
+        .user-metrics-section-user
+            h2.centered-title-user User Metrics
+            .card-user
+                .card-body-user
+                    p Ratings Given: #{ratingsGiven}
+                    p Comments Made: #{commentsMade}
+                    p Resources Added: #{resourcesAdded}
+
+        .user-resources-section-user
+            h2.centered-title-user User Resources
+            if resources && resources.length > 0
+                .card-container-user
+                    each resource in resources
+                        .card-user
+                            a.card-link(href=`/resources/${resource._id}`)
+                                .card-body-user
+                                    h3.resource-title #{resource.title}
+                                    p.subtitle #{resource.subtitle || 'N/A'}
+                                    p Type: #{resource.type}
+                                    p Date: #{resource.creationDate}
+                                    p Tags: #{resource.tags.join(', ')}
+                                    p Visibility: #{resource.visibility}
+            else
+                p No resources found.
+
+        .user-ratings-section-user
+            h2.centered-title-user User Ratings
+            if ratings && ratings.length > 0
+                .card-container-user
+                    each rating in ratings
+                        .card-user
+                            .card-body-user
+                                p Resource: #{rating.resource}
+                                p Stars: #{rating.stars}
+            else
+                p No ratings found.
+
+        .user-comments-section-user
+            h2.centered-title-user User Comments
+            if comments && comments.length > 0
+                .card-container-user
+                    each comment in comments
+                        .card-user
+                            .card-body-user
+                                p Resource: #{comment.resource}
+                                p Content: #{comment.content}
+                                p Date: #{comment.date}
+                                form(action=`/resources/comment/delete/${comment.resource}`, method="POST", style="display:inline")
+                                    input(type="hidden", name="commentId", value=comment.commentId)
+                                    button.delete-button(type="submit") Delete Comment
+            else
+                p No comments found.

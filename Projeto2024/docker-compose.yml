@@ -1,0 +1,48 @@
+version: "3"
+services:
+  archiveinterface:
+    container_name: archiveinterface
+    build: ./archiveAPP
+    environment:
+      - archiveAPI=http://archiveapi:5001/
+      - archiveAUTH=http://archiveauth:5002/
+    ports:
+      - "5000:5000"
+    depends_on:
+      - archiveapi
+      - archiveauth
+    networks:
+      - archivenet
+  
+  archiveapi:
+    container_name: archiveapi
+    build: ./archiveAPI
+    environment:
+      - MONGODB_URL=mongodb://mongoserv/archive
+    depends_on:
+      - mongoserv
+    networks:
+      - archivenet
+    
+  archiveauth:
+    container_name: archiveauth
+    build: ./archiveAUTH
+    environment:
+      - MONGODB_URL=mongodb://mongoserv/archive
+    depends_on:
+      - mongoserv
+    networks:
+      - archivenet
+
+  mongoserv:
+    container_name: dbarchive
+    image: mongo
+    networks:
+      - archivenet
+    volumes:
+      - './mongodata:/data/db'
+
+networks:
+  archivenet:
+    name: archivenet
+    driver: bridge
